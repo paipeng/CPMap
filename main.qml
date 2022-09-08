@@ -51,11 +51,21 @@ Item {
 
 
 
+    Location {
+        // Define location that will be "center" of map
+        id: mapCenter
+        coordinate {
+            latitude: 41.8341
+            longitude: 123.4281
+        }
+    }
     Map {
         id: map
         anchors.fill: parent
         activeMapType: map.supportedMapTypes[1]
-        zoomLevel: 14
+        zoomLevel: 16
+        maximumZoomLevel: 16
+        minimumZoomLevel:13
         plugin: Plugin {
             id: mapPlugin
             name: 'osm';
@@ -77,7 +87,84 @@ Item {
             // }
         }
         copyrightsVisible : false
-        center: QtPositioning.coordinate(41.8341, 123.4281) // Shenyang
+        center: mapCenter.coordinate//QtPositioning.coordinate() // Shenyang
+        gesture.enabled: true
+        gesture.acceptedGestures: MapGestureArea.PinchGesture | MapGestureArea.PanGesture
 
+        //If user doubleclicks on map update coordinates of pixel to coordinates on UI
+        signal qmlSignalUpdateLat(string msg)
+        signal qmlSignalUpdateLon(string msg)
+
+        PinchArea {
+            id: pincharea
+            property double _oldZoom
+            anchors.fill: parent
+            function calcZoomDelta(zoom, percent) {
+                return zoom + Math.log(percent)/Math.log(2)
+            }
+            onPinchStarted: {
+                oldZoom = map.zoomLevel
+            }
+
+            onPinchUpdated: {
+                map.zoomLevel = calcZoomDelta(oldZoom, pinch.scale)
+            }
+
+            onPinchFinished: {
+                map.zoomLevel = calcZoomDelta(oldZoom, pinch.scale)
+            }
+        }
+
+        MouseArea
+        {
+            id: mousearea
+            hoverEnabled: true
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton
+            onDoubleClicked: {
+                map.center.latitude = map.toCoordinate(Qt.point(mouseX,mouseY)).latitude
+                map.center.longitude = map.toCoordinate(Qt.point(mouseX,mouseY)).longitude
+                map.qmlSignalUpdateLat(map.center.latitude)
+                map.qmlSignalUpdateLon(map.center.longitude)
+            }
+
+            onPressed: {
+
+            }
+
+            onReleased: {
+
+            }
+
+            onPositionChanged: {
+
+            }
+
+            onCanceled: {
+
+            }
+        }
+
+        function updateMap(lat,lon,bear){
+            map.center.latitude = lat;
+            map.center.longtitude = lon;
+            map.bearing = bear;
+        }
+
+        onCenterChanged: {
+            // As soon as map center changed -- we'll check if coordinates differs from our
+            //   mapCenter coordinates and if so, set map center coordinates equal to mapCenter
+            //if (map.center != mapCenter.coordinate) {
+            //    map.center = mapCenter.coordinate
+            //}
+        }
+
+        MapCircle {
+            // Circle just for ability to check if it zooms correctly
+            center: mapCenter.coordinate
+            radius: 50.0
+            color: "green"
+            border.width: 3
+        }
     }
 }
