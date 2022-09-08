@@ -63,10 +63,13 @@ Item {
                 name: 'osm.mapping.offline.directory'
                 value: ':/map_tiles/'
             }
-            //PluginParameter {
-            //    name: "osm.mapping.providersrepository.disabled"
-            //    value: true
-            //}
+            //PluginParameter { name: "osm.mapping.host"; value: "" }
+            PluginParameter { name: "osm.mapping.copyright"; value: "All mine" }
+            //PluginParameter { name: "osm.routing.host"; value: "" }
+            //PluginParameter { name: "osm.geocoding.host"; value: "" }
+            PluginParameter { name: "osm.mapping.providersrepository.disabled"; value: true}
+            PluginParameter { name: "osm.mapping.cache.disk.size"; value: 0}
+
             // specify plugin parameters if necessary
             // PluginParameter {
             //     name:
