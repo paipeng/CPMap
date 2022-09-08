@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     QLabel *label = new QLabel(this);
     label->setText("test");
 
-    hBoxLayout->addWidget(label);
+    //hBoxLayout->addWidget(label);
 
     QQuickWidget *view = new QQuickWidget;
     view->setSource(QUrl::fromLocalFile("main.qml"));

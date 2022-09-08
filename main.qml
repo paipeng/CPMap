@@ -41,24 +41,40 @@
 import QtQuick 2.7
 import QtQuick.Window 2.2
 import QtLocation 5.8
+import QtPositioning 5.8
 
 Item {
     id: win
     visible: true
-    width: 512
-    height: 512
+    width: Window.width
+    height: Window.height
+
+
 
     Map {
         id: map
         anchors.fill: parent
         activeMapType: map.supportedMapTypes[1]
-        zoomLevel: 1
+        zoomLevel: 14
         plugin: Plugin {
+            id: mapPlugin
             name: 'osm';
             PluginParameter {
                 name: 'osm.mapping.offline.directory'
-                value: ':/offline_tiles/'
+                value: ':/map_tiles/'
             }
+            //PluginParameter {
+            //    name: "osm.mapping.providersrepository.disabled"
+            //    value: true
+            //}
+            // specify plugin parameters if necessary
+            // PluginParameter {
+            //     name:
+            //     value:
+            // }
         }
+        copyrightsVisible : false
+        center: QtPositioning.coordinate(41.8341, 123.4281) // Shenyang
+
     }
 }
