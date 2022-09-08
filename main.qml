@@ -166,5 +166,22 @@ Item {
             color: "green"
             border.width: 3
         }
+
+
+        MapQuickItem {
+            id: marker
+            anchorPoint.x: image.width/2
+            anchorPoint.y: image.height
+
+            coordinate: mapCenter.coordinate//QtPositioning.coordinate(20.5, -2.5)
+
+            sourceItem: Image {
+                id: image
+
+                source: "qrc:/icons/poi.png"
+                height: 50
+                width: 50
+            }
+        }
     }
 }
