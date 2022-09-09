@@ -21,3 +21,7 @@ void MyGlobalObject::setCounter(int value) {
         counterChanged(); // trigger signal of counter change
     }
 }
+
+QString MyGlobalObject::getJson() {
+    return QString("hello QML from C++");
+}

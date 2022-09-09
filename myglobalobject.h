@@ -16,6 +16,7 @@ public:
 
 public slots: // slots are public methods available in QML
     void doSomething(const QString &text);
+    QString getJson();
 signals:
     void counterChanged();
 private:

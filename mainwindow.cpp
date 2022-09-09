@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     MyGlobalObject *myGlobal = new MyGlobalObject(this);
     qmlRegisterType<MyQMLType>("com.yourcompany.xyz", 1, 0, "MyQMLType"); // MyQMLType will be usable with: import com.yourcompany.xyz 1.0
     QQuickWidget *view = new QQuickWidget;
-    view->setSource(QUrl::fromLocalFile("main.qml"));
     view->rootContext()->setContextProperty("myGlobalObject", myGlobal);
+    view->setSource(QUrl::fromLocalFile("main.qml"));
 
     myGlobal->doSomething("TEXT FROM C++");
     // register a QML type made with C++

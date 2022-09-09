@@ -53,6 +53,14 @@ Item {
     property string text: "myGlobalObject.counter + 1"
 
 
+    Component.onCompleted: {
+        console.log('item component onCompleted')
+        var JsonString = '{"a":"A whatever, run","b":"B fore something happens"}';
+        var JsonObject= JSON.parse(JsonString);
+        var json = myGlobalObject.getJson();
+        console.log('json: ' + json)
+    }
+
     // Example 2: Custom QML Type implemented with C++
     // NOTE: This type is declared in main.cpp and available after using "import com.yourcompany.xyz 1.0"
     MyQMLType {
@@ -195,9 +203,9 @@ Item {
         onCenterChanged: {
             // As soon as map center changed -- we'll check if coordinates differs from our
             //   mapCenter coordinates and if so, set map center coordinates equal to mapCenter
-            //if (map.center != mapCenter.coordinate) {
-            //    map.center = mapCenter.coordinate
-            //}
+            if (map.center != mapCenter.coordinate) {
+                map.center = mapCenter.coordinate
+            }
         }
 
         MapCircle {
