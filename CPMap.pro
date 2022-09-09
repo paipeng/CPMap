@@ -15,10 +15,14 @@ QT += quickwidgets
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    myglobalobject.cpp \
+    myqmltype.cpp
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    myglobalobject.h \
+    myqmltype.h
 
 FORMS += \
     mainwindow.ui
