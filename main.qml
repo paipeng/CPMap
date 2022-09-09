@@ -54,23 +54,29 @@ Item {
 
 
     // Example 2: Custom QML Type implemented with C++
-     // NOTE: This type is declared in main.cpp and available after using "import com.yourcompany.xyz 1.0"
-     MyQMLType {
-       id: typeFromCpp
+    // NOTE: This type is declared in main.cpp and available after using "import com.yourcompany.xyz 1.0"
+    MyQMLType {
+        id: typeFromCpp
 
-       // 2.1: Property Binding for MyQMLType::message property
-       // NOTE: Similar to types created purely with QML, you may use property bindings to keep your property values updated
-       message: "counter / 2 = " + Math.floor(myGlobalObject.counter / 2)
+        // 2.1: Property Binding for MyQMLType::message property
+        // NOTE: Similar to types created purely with QML, you may use property bindings to keep your property values updated
+        message: "counter / 2 = " + Math.floor(myGlobalObject.counter / 2)
 
-       // 2.2: Reacting to property changes
-       // NOTE: With the onMessageChanged signal, you can add code to handle property changes
-       onMessageChanged: console.log("typeFromCpp message changed to '" + typeFromCpp.message+"'")
+        // 2.2: Reacting to property changes
+        // NOTE: With the onMessageChanged signal, you can add code to handle property changes
+        onMessageChanged: console.log("typeFromCpp message changed to '" + typeFromCpp.message+"'")
 
-       // 2.3: Run code at creation of the QML component
-       // NOTE: The Component.onCompleted signal is available for every QML item, even for items defined with C++.
-       // The signal is fired when the QML Engine creates the item at runtime.
-       Component.onCompleted: myGlobalObject.counter = typeFromCpp.increment(myGlobalObject.counter)
-     }
+        // 2.3: Run code at creation of the QML component
+        // NOTE: The Component.onCompleted signal is available for every QML item, even for items defined with C++.
+        // The signal is fired when the QML Engine creates the item at runtime.
+        Component.onCompleted: myGlobalObject.counter = typeFromCpp.increment(myGlobalObject.counter)
+
+        // 2.4: Handling a custom signal
+        onCppTaskFinished: {
+            console.log("onCppTaskFinished")
+            myGlobalObject.counter = 0 // reset counter to zero, this will also update the message
+        }
+    }
 
     Location {
         // Define location that will be "center" of map
@@ -143,7 +149,10 @@ Item {
             hoverEnabled: true
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton
-            onClicked: myGlobalObject.doSomething("TEXT FROM QML")
+            onClicked: {
+                myGlobalObject.doSomething("TEXT FROM QML")
+                typeFromCpp.startCppTask()
+            }
             onDoubleClicked: {
                 map.center.latitude = map.toCoordinate(Qt.point(mouseX,mouseY)).latitude
                 map.center.longitude = map.toCoordinate(Qt.point(mouseX,mouseY)).longitude

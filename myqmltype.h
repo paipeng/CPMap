@@ -12,16 +12,19 @@ public:
     explicit MyQMLType(QObject *parent = nullptr);
 
 public slots: // slots are public methods available in QML
-int increment(int value);
+    int increment(int value);
+    void startCppTask(); // starts internal calculations of doCppTask()
 
 signals:
-void messageChanged();
+    void messageChanged();
+    void cppTaskFinished(); // triggered after calculations in doCppTask()
 
 public:
     QString message() const;
     void setMessage(const QString& value);
 
 private:
+    void doCppTask(); // method for internal calculations
     QString m_message;
 };
 

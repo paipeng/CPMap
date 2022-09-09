@@ -21,14 +21,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     //hBoxLayout->addWidget(label);
 
-    qmlRegisterType<MyQMLType>("com.yourcompany.xyz", 1, 0, "MyQMLType"); // MyQMLType will be usable with: import com.yourcompany.xyz 1.0
-
-    QQuickWidget *view = new QQuickWidget;
-    view->setSource(QUrl::fromLocalFile("main.qml"));
 
     MyGlobalObject *myGlobal = new MyGlobalObject(this);
-    myGlobal->doSomething("TEXT FROM C++");
+    qmlRegisterType<MyQMLType>("com.yourcompany.xyz", 1, 0, "MyQMLType"); // MyQMLType will be usable with: import com.yourcompany.xyz 1.0
+    QQuickWidget *view = new QQuickWidget;
+    view->setSource(QUrl::fromLocalFile("main.qml"));
     view->rootContext()->setContextProperty("myGlobalObject", myGlobal);
+
+    myGlobal->doSomething("TEXT FROM C++");
     // register a QML type made with C++
 
     //view->show();
