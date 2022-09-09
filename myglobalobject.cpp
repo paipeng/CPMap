@@ -1,5 +1,6 @@
 #include "myglobalobject.h"
 #include <QDebug>
+#include <QFile>
 
 MyGlobalObject::MyGlobalObject(QObject *parent) : QObject(parent), m_counter(0)
 {
@@ -23,5 +24,20 @@ void MyGlobalObject::setCounter(int value) {
 }
 
 QString MyGlobalObject::getJson() {
-    return QString("hello QML from C++");
+//return QString("hello QML from C++");
+    QFile mFile(":/json/coordinate.json");
+
+    if(!mFile.open(QFile::ReadOnly | QFile::Text)){
+        qDebug() << "could not open file for read";
+        return "";
+    }
+
+    QTextStream in(&mFile);
+    QString mText = in.readAll();
+
+    //qDebug() << mText;
+
+    mFile.close();
+    return mText;
+
 }

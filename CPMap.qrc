@@ -644,4 +644,7 @@
         <file>map_tiles/osm_100-l-3-16-55233-24368.png</file>
         <file>icons/poi.png</file>
     </qresource>
+    <qresource prefix="/json">
+        <file>coordinate.json</file>
+    </qresource>
 </RCC>

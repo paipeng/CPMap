@@ -57,8 +57,13 @@ Item {
         console.log('item component onCompleted')
         var JsonString = '{"a":"A whatever, run","b":"B fore something happens"}';
         var JsonObject= JSON.parse(JsonString);
+        console.log(JsonObject)
         var json = myGlobalObject.getJson();
-        console.log('json: ' + json)
+
+        var borderPoints = JSON.parse(json)
+        mapPolyline.path = borderPoints
+        mapPolygon.path = borderPoints
+        //console.log('json: ' + mapPolyline.path)
     }
 
     // Example 2: Custom QML Type implemented with C++
@@ -98,7 +103,7 @@ Item {
         id: map
         anchors.fill: parent
         activeMapType: map.supportedMapTypes[1]
-        zoomLevel: 16
+        zoomLevel: 14
         maximumZoomLevel: 16
         minimumZoomLevel:13
 
@@ -203,9 +208,9 @@ Item {
         onCenterChanged: {
             // As soon as map center changed -- we'll check if coordinates differs from our
             //   mapCenter coordinates and if so, set map center coordinates equal to mapCenter
-            if (map.center != mapCenter.coordinate) {
-                map.center = mapCenter.coordinate
-            }
+            //if (map.center != mapCenter.coordinate) {
+            //    map.center = mapCenter.coordinate
+            //}
         }
 
         MapCircle {
@@ -233,69 +238,19 @@ Item {
         }
 
         MapPolyline {
+            id: mapPolyline
             line.width: 3
             line.color: 'green'
             path: [
-                { latitude: 41.8560700, longitude: 123.4120900 },
-                { latitude: 41.85529, longitude: 123.41214 },
-                { latitude: 41.85423, longitude: 123.41224 },
-                { latitude: 41.85120, longitude: 123.41257 },
-                { latitude: 41.85124, longitude: 123.41395 },
 
-                { latitude: 41.85062, longitude: 123.41423 },
-                { latitude: 41.84968, longitude: 123.41648 },
-                { latitude: 41.84982, longitude: 123.41755 },
-                { latitude: 41.84878, longitude: 123.41763 },
-                { latitude: 41.84837, longitude: 123.41732 },
+            ]
+        }
 
-                { latitude: 41.84811, longitude: 123.41297 },
-                { latitude: 41.84586, longitude: 123.41309 },
-                { latitude: 41.84560, longitude: 123.41487 },
-                { latitude: 41.84479, longitude: 123.41605 },
-                { latitude: 41.84263, longitude: 123.41363 },
-                { latitude: 41.84191, longitude: 123.41343 },
-                { latitude: 41.83908, longitude: 123.41751 },
-                { latitude: 41.83863, longitude: 123.41769 },
-                { latitude: 41.83862, longitude: 123.41769 },
+        MapPolygon {
+            id: mapPolygon
+            color: 'blue'
+            path: [
 
-                { latitude: 41.83706, longitude: 123.41747 },
-                { latitude: 41.83669, longitude: 123.41734 },
-                { latitude: 41.83692, longitude: 123.42167 },
-                { latitude: 41.83756, longitude: 123.42164 },
-                { latitude: 41.83762, longitude: 123.42289 },
-                { latitude: 41.83702, longitude: 123.42303 },
-                { latitude: 41.83707, longitude: 123.42333 },
-
-                { latitude: 41.83742, longitude: 123.42488 },
-                { latitude: 41.83774, longitude: 123.42622 },
-                { latitude: 41.83807, longitude: 123.42689 },
-                { latitude: 41.83806, longitude: 123.42691 },
-                { latitude: 41.83985, longitude: 123.42950 },
-                { latitude: 41.84199, longitude: 123.43176 },
-                { latitude: 41.84361, longitude: 123.43284 },
-                { latitude: 41.84369, longitude: 123.43193 },
-                { latitude: 41.84383, longitude: 123.43123 },
-                { latitude: 41.84375, longitude: 123.42922 },
-                { latitude: 41.84637, longitude: 123.42919 },
-
-                { latitude: 41.8463505009051, longitude: 123.429255889729 },
-                { latitude: 41.8458692018638, longitude: 123.431073022287 },
-                { latitude: 41.8458391205534, longitude: 123.432163301822 },
-                { latitude: 41.8491289276155, longitude: 123.431404216147 },
-                { latitude: 41.854951926661, longitude: 123.429790132015 },
-                { latitude: 41.8557055580592, longitude: 123.42950104232 },
-                { latitude: 41.860146416828, longitude: 123.427453323645 },
-                { latitude: 41.8605052608818, longitude: 123.426875144255 },
-                { latitude: 41.8605949715806, longitude: 123.426296964864 },
-                { latitude: 41.860577029451, longitude: 123.426236737844 },
-                { latitude: 41.8605321741047, longitude: 123.425357423355 },
-                { latitude: 41.8598862536298, longitude: 123.421322213025 },
-                { latitude: 41.8588366189429, longitude: 123.414540650591 },
-                { latitude: 41.8585450506946, longitude: 123.413866107969 },
-                { latitude: 41.8578991101482, longitude: 123.413492700446 },
-                { latitude: 41.857145504598, longitude: 123.413203610751 },
-                { latitude: 41.8565174931892, longitude: 123.41262543136 },
-                { latitude: 41.8560700, longitude: 123.4120900 },
             ]
         }
     }
