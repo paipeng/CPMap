@@ -39,7 +39,8 @@
 ****************************************************************************/
 
 import QtQuick 2.7
-import QtQuick.Window 2.2
+import QtQuick.Window 2.5
+import QtQuick.Controls 2.5
 import QtLocation 5.8
 import QtPositioning 5.8
 
@@ -62,8 +63,25 @@ Item {
 
         var borderPoints = JSON.parse(json)
         mapPolyline.path = borderPoints
-        mapPolygon.path = borderPoints
+        //mapPolygon.path = borderPoints
         //console.log('json: ' + mapPolyline.path)
+
+/*
+        var helpMapQuickItem = new MapQuickItem();
+        helpMapQuickItem.id = markerPARK2
+        helpMapQuickItem.anchorPoint.x = image.width/2
+        helpMapQuickItem.anchorPoint.y = image.height
+
+        helpMapQuickItem.coordinate = QtPositioning.coordinate(41.8374,123.4240)
+
+        helpMapQuickItem.sourceItem = imageParkingPOI
+
+        map.append(helpMapQuickItem)
+        */
+    }
+
+    function focusOnLocation() {
+        console.log(map.center)
     }
 
     // Example 2: Custom QML Type implemented with C++
@@ -95,10 +113,11 @@ Item {
         // Define location that will be "center" of map
         id: mapCenter
         coordinate {
-            latitude: 41.8341
-            longitude: 123.4281
+            latitude: 41.8481
+            longitude: 123.4216
         }
     }
+
     Map {
         id: map
         anchors.fill: parent
@@ -221,6 +240,21 @@ Item {
             border.width: 3
         }
 
+        Image {
+            id: imageWCPOI
+
+            source: "qrc:/icons/poi-wc.png"
+            height: 50
+            width: 50
+        }
+        Image {
+            id: imageParkingPOI
+
+            source: "qrc:/icons/poi-parking.png"
+            height: 50
+            width: 50
+        }
+
         MapQuickItem {
             id: marker
             anchorPoint.x: image.width/2
@@ -237,6 +271,29 @@ Item {
             }
         }
 
+        MapQuickItem {
+            id: markerWC
+            anchorPoint.x: image.width/2
+            anchorPoint.y: image.height
+
+            coordinate: QtPositioning.coordinate(41.83896,123.42097)
+
+            sourceItem: imageWCPOI
+        }
+
+
+        MapQuickItem {
+            id: markerPARK
+            anchorPoint.x: image.width/2
+            anchorPoint.y: image.height
+
+            coordinate: QtPositioning.coordinate(41.8448,123.4314)
+
+            sourceItem: imageParkingPOI
+        }
+
+
+
         MapPolyline {
             id: mapPolyline
             line.width: 3
@@ -252,6 +309,15 @@ Item {
             path: [
 
             ]
+        }
+
+        Button {
+            x:10
+            y:10
+            text: "button"
+            onClicked: {
+                focusOnLocation()
+            }
         }
     }
 }
