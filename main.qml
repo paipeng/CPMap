@@ -38,11 +38,11 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.7
+import QtQuick 2.12
 import QtQuick.Window 2.5
 import QtQuick.Controls 2.5
-import QtLocation 5.8
-import QtPositioning 5.8
+import QtLocation 5.12
+import QtPositioning 5.12
 
 import com.yourcompany.xyz 1.0
 
@@ -52,36 +52,97 @@ Item {
     width: Window.width
     height: Window.height
     property string text: "myGlobalObject.counter + 1"
-
+    property MapQuickItem poiItem
+    property MapQuickItem poiItem2
+    property string poisJsonString
 
     Component.onCompleted: {
         console.log('item component onCompleted')
         var JsonString = '{"a":"A whatever, run","b":"B fore something happens"}';
         var JsonObject= JSON.parse(JsonString);
         console.log(JsonObject)
-        var json = myGlobalObject.getJson();
+        poisJsonString = myGlobalObject.getJson();
 
-        var borderPoints = JSON.parse(json)
-        mapPolyline.path = borderPoints
+        var poiJsons = JSON.parse(myGlobalObject.getJson())
+        mapPolyline.path = poiJsons.borderCoordinations
         //mapPolygon.path = borderPoints
         //console.log('json: ' + mapPolyline.path)
 
+        var index = 0
+        for (var i = 0; i < poiJsons.pois.length; i++) {
+            var item = poiJsons.pois[i]
+            console.log(index + ': ' + item.type + ', ' + item.longitude)
+            var imagePOI = 'imagePOI'
+            if (item.type === 1) {
+                imagePOI = 'imagePOI'
+            } else if (item.type === 2) {
+                imagePOI = 'imageParkingPOI'
+            } else if (item.type === 3) {
+                imagePOI = 'imagePolicePOI'
+            } else if (item.type === 4) {
+                imagePOI = 'imageWCPOI'
+            } else if (item.type === 5) {
+                imagePOI = 'imageRestaurantPOI'
+            } else if (item.type === 6) {
+                imagePOI = 'imageFirstAidPOI'
+            }
+
+            var qmlObjectStr = 'import QtLocation 5.12;import QtPositioning 5.12;    // 这里只画中线
+                MapQuickItem {
+                    id: poiItem_' + item.name + '
+                    anchorPoint.x: sourceItem.width/2
+                    anchorPoint.y: sourceItem.height
+
+                    coordinate: QtPositioning.coordinate(' + item.latitude + ', ' + item.longitude +')
+
+                    sourceItem: ' + imagePOI + ' }'
+            var poiItem = Qt.createQmlObject(qmlObjectStr, map, 'poiItem-' + item.name)
+            map.addMapItem(poiItem)
+            index++
+        }
 /*
-        var helpMapQuickItem = new MapQuickItem();
-        helpMapQuickItem.id = markerPARK2
-        helpMapQuickItem.anchorPoint.x = image.width/2
-        helpMapQuickItem.anchorPoint.y = image.height
+        poiItem = Qt.createQmlObject('import QtLocation 5.12;import QtPositioning 5.12;    // 这里只画中线
+        MapQuickItem {
+            id: poiItem
+            anchorPoint.x: sourceItem.width/2
+            anchorPoint.y: sourceItem.height
 
-        helpMapQuickItem.coordinate = QtPositioning.coordinate(41.8374,123.4240)
+            coordinate: QtPositioning.coordinate(41.8374,123.4240)
 
-        helpMapQuickItem.sourceItem = imageParkingPOI
+            sourceItem: imageParkingPOI
+        }', map, "poiItem");
+        //console.log(newMapLaneMedian.coordinate)
+        //map.addMapItem(newMapLaneMedian)
 
-        map.append(helpMapQuickItem)
+
+        poiItem2 = Qt.createQmlObject('import QtLocation 5.12;import QtPositioning 5.12;    // 这里只画中线
+        MapQuickItem {
+            id: poiItem2
+            anchorPoint.x: sourceItem.width/2
+            anchorPoint.y: sourceItem.height
+
+            coordinate: QtPositioning.coordinate(41.84745,123.42143)
+
+            sourceItem: imageWCPOI
+        }', map, "poiItem2");
         */
     }
 
     function focusOnLocation() {
         console.log(map.center)
+    }
+
+    function zoomIn() {
+        if (map.zoomLevel < map.maximumZoomLevel) {
+            map.zoomLevel = map.zoomLevel + 1
+        }
+
+    }
+
+    function zoomOut() {
+        if (map.zoomLevel > map.minimumZoomLevel) {
+            map.zoomLevel = map.zoomLevel - 1
+        }
     }
 
     // Example 2: Custom QML Type implemented with C++
@@ -154,6 +215,16 @@ Item {
         //If user doubleclicks on map update coordinates of pixel to coordinates on UI
         signal qmlSignalUpdateLat(string msg)
         signal qmlSignalUpdateLon(string msg)
+
+        Component.onCompleted: {
+            console.log("map Component.onCompleted")
+
+
+            //map.addMapItem(poiItem)
+            //map.addMapItem(poiItem2)
+
+            console.log('mapItems size: ' + map.mapItems.length)
+        }
 
         PinchArea {
             id: pincharea
@@ -231,7 +302,7 @@ Item {
             //    map.center = mapCenter.coordinate
             //}
         }
-
+/*
         MapCircle {
             // Circle just for ability to check if it zooms correctly
             center: mapCenter.coordinate
@@ -239,7 +310,7 @@ Item {
             color: "green"
             border.width: 3
         }
-
+*/
         Image {
             id: imageWCPOI
 
@@ -247,6 +318,7 @@ Item {
             height: 50
             width: 50
         }
+
         Image {
             id: imageParkingPOI
 
@@ -255,6 +327,39 @@ Item {
             width: 50
         }
 
+        Image {
+            id: imageFirstAidPOI
+
+            source: "qrc:/icons/poi-first-aid.png"
+            height: 50
+            width: 50
+        }
+
+        Image {
+            id: imagePolicePOI
+
+            source: "qrc:/icons/poi-police.png"
+            height: 50
+            width: 50
+        }
+
+        Image {
+            id: imageRestaurantPOI
+
+            source: "qrc:/icons/poi-restaurant.png"
+            height: 50
+            width: 50
+        }
+
+
+        Image {
+            id: imagePOI
+
+            source: "qrc:/icons/poi.png"
+            height: 50
+            width: 50
+        }
+/*
         MapQuickItem {
             id: marker
             anchorPoint.x: image.width/2
@@ -284,14 +389,14 @@ Item {
 
         MapQuickItem {
             id: markerPARK
-            anchorPoint.x: image.width/2
-            anchorPoint.y: image.height
+            anchorPoint.x: imageParkingPOI.width/2
+            anchorPoint.y: imageParkingPOI.height
 
             coordinate: QtPositioning.coordinate(41.8448,123.4314)
 
             sourceItem: imageParkingPOI
         }
-
+*/
 
 
         MapPolyline {
@@ -312,11 +417,26 @@ Item {
         }
 
         Button {
-            x:10
+            id: zoomInButton
+            x: map.width - 10 - 40
             y:10
-            text: "button"
+            width:40
+            height: 40
+            text: "Zoom +"
             onClicked: {
-                focusOnLocation()
+                zoomIn()
+            }
+        }
+
+        Button {
+            id: zoomOutButton
+            x: map.width - 10 - 40
+            y:10 + 40 + 10
+            width:40
+            height: 40
+            text: "Zoom -"
+            onClicked: {
+                zoomOut()
             }
         }
     }

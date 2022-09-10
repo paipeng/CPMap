@@ -647,6 +647,7 @@
         <file>icons/poi-restaurant.png</file>
         <file>icons/poi-parking.png</file>
         <file>icons/poi-wc.png</file>
+        <file>icons/poi-police.png</file>
     </qresource>
     <qresource prefix="/json">
         <file>coordinate.json</file>
