@@ -57,6 +57,7 @@ Item {
     property string poisJsonString
     property bool poiVisible: true
     property var poi
+    property var mousePosition
 
     Component.onCompleted: {
         console.log('item component onCompleted')
@@ -188,8 +189,8 @@ Item {
             import QtPositioning 5.12
             Image {
                 source: "qrc:/icons/' +  imageSrc + '"
-                height: 40
-                width: 30
+                height: 30
+                width: 20
             }', map);
 
         poiButton.background = qmlImage
@@ -312,17 +313,56 @@ Item {
             }
         }
 
+        Menu {
+            id: contextMenu
+            width: 100
+            MenuItem {
+                text: 'Add POI'
+                icon.source: "qrc:/icons/poi.png"
+                icon.width: 20
+                icon.height: 20
+
+                onTriggered: {
+                    console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+                }
+
+            }
+            MenuItem {
+                text: 'Edit POI'
+                enabled: false
+                onTriggered: {
+                    console.log('edit poi:' + mousePosition)
+
+                }
+            }
+            MenuItem {
+                text: 'Delete POI'
+                onTriggered: {
+                    console.log('delete poi+ ' + mousePosition)
+
+                }
+            }
+        }
+
         MouseArea
         {
             id: mousearea
             hoverEnabled: true
             anchors.fill: parent
-            acceptedButtons: Qt.LeftButton
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
             onClicked: {
                 console.log(mouse.x + '-' + mouse.y)
+                mousePosition = {x: mouse.x, y: mouse.y};
                 console.log('coordination: ' + map.toCoordinate(Qt.point(mouseX,mouseY)))
-                myGlobalObject.doSomething("TEXT FROM QML")
-                typeFromCpp.startCppTask()
+                if (mouse.button == Qt.RightButton) {
+                    contextMenu.popup()
+                } else {
+                    myGlobalObject.doSomething("TEXT FROM QML")
+                    typeFromCpp.startCppTask()
+                    if (contextMenu.visible) {
+                        contextMenu.close()
+                    }
+                }
             }
             onDoubleClicked: {
                 map.center.latitude = map.toCoordinate(Qt.point(mouseX,mouseY)).latitude
