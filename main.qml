@@ -61,9 +61,15 @@ Item {
         var JsonString = '{"a":"A whatever, run","b":"B fore something happens"}';
         var JsonObject= JSON.parse(JsonString);
         console.log(JsonObject)
-        poisJsonString = myGlobalObject.getJson();
+        //poisJsonString = myGlobalObject.getJson();
 
         var poiJsons = JSON.parse(myGlobalObject.getJson())
+
+        map.zoomLevel = poiJsons.map.zoomLevel
+        map.maximumZoomLevel = poiJsons.map.maximumZoomLevel
+        map.minimumZoomLevel = poiJsons.map.minimumZoomLevel
+        map.center = QtPositioning.coordinate(poiJsons.map.center.latitude, poiJsons.map.center.longitude)
+
         mapPolyline.path = poiJsons.borderCoordinations
         //mapPolygon.path = borderPoints
         //console.log('json: ' + mapPolyline.path)
@@ -433,13 +439,28 @@ Item {
             ]
         }
 
+
+        Image {
+            id: imageZoomIn
+            source: "qrc:/icons/zoom-in.png"
+            height: 30
+            width: 30
+        }
+        Image {
+            id: imageZoomOut
+            source: "qrc:/icons/zoom-out.png"
+            height: 30
+            width: 30
+        }
+
         Button {
             id: zoomInButton
             x: map.width - 10 - 40
             y:10
             width:40
             height: 40
-            text: "Zoom +"
+            //text: "+"
+            background: imageZoomIn
             onClicked: {
                 zoomIn()
             }
@@ -451,7 +472,8 @@ Item {
             y:10 + 40 + 10
             width:40
             height: 40
-            text: "Zoom -"
+//            text: "-"
+            background: imageZoomOut
             onClicked: {
                 zoomOut()
             }

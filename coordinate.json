@@ -1,4 +1,13 @@
 {
+    "map": {
+        "minimumZoomLevel": 13,
+        "maximumZoomLevel": 16,
+        "zoomLevel": 14,
+        "center": {
+            "latitude": 41.8481,
+            "longitude": 123.4216
+        }
+    },
     "pois" : [
         {
             "type": 1,
