@@ -652,6 +652,7 @@
         <file>icons/zoom-out.png</file>
         <file>icons/poi-off.png</file>
         <file>icons/poi-on.png</file>
+        <file>icons/map-center.png</file>
     </qresource>
     <qresource prefix="/json">
         <file>coordinate.json</file>

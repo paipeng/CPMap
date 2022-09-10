@@ -56,6 +56,7 @@ Item {
     property MapQuickItem poiItem2
     property string poisJsonString
     property bool poiVisible: true
+    property var poi
 
     Component.onCompleted: {
         console.log('item component onCompleted')
@@ -64,20 +65,20 @@ Item {
         console.log(JsonObject)
         //poisJsonString = myGlobalObject.getJson();
 
-        var poiJsons = JSON.parse(myGlobalObject.getJson())
+        poi = JSON.parse(myGlobalObject.getJson())
 
-        map.zoomLevel = poiJsons.map.zoomLevel
-        map.maximumZoomLevel = poiJsons.map.maximumZoomLevel
-        map.minimumZoomLevel = poiJsons.map.minimumZoomLevel
-        map.center = QtPositioning.coordinate(poiJsons.map.center.latitude, poiJsons.map.center.longitude)
+        map.zoomLevel = poi.map.zoomLevel
+        map.maximumZoomLevel = poi.map.maximumZoomLevel
+        map.minimumZoomLevel = poi.map.minimumZoomLevel
+        map.center = QtPositioning.coordinate(poi.map.center.latitude, poi.map.center.longitude)
 
-        mapPolyline.path = poiJsons.borderCoordinations
+        mapPolyline.path = poi.borderCoordinations
         //mapPolygon.path = borderPoints
         //console.log('json: ' + mapPolyline.path)
 
         var index = 0
-        for (var i = 0; i < poiJsons.pois.length; i++) {
-            var item = poiJsons.pois[i]
+        for (var i = 0; i < poi.pois.length; i++) {
+            var item = poi.pois[i]
             console.log(index + ': ' + item.type + ', ' + item.longitude)
             var imagePOI = 'imagePOI'
             if (item.type === 1) {
@@ -194,9 +195,20 @@ Item {
         poiButton.background = qmlImage
         for (var i = 0; i < map.mapItems.length; i++) {
             var poiItem = map.mapItems[i]
-            poiItem.visible = !visible
+            console.log('poiItem type: ' + poiItem.constructor)
+            //console.log('poiItem type: ' + typeof poiItem)
+            //console.log('poiItem path: ' + poiItem.path)
+
+            if (poiItem.path === undefined) {
+                poiItem.visible = !visible
+            }
         }
         poiVisible = !visible
+    }
+
+    function setMapCenteri() {
+        console.log('setMapCenter')
+        map.center = QtPositioning.coordinate(poi.map.center.latitude, poi.map.center.longitude)
     }
 
     // Example 2: Custom QML Type implemented with C++
@@ -307,6 +319,8 @@ Item {
             anchors.fill: parent
             acceptedButtons: Qt.LeftButton
             onClicked: {
+                console.log(mouse.x + '-' + mouse.y)
+                console.log('coordination: ' + map.toCoordinate(Qt.point(mouseX,mouseY)))
                 myGlobalObject.doSomething("TEXT FROM QML")
                 typeFromCpp.startCppTask()
             }
@@ -517,7 +531,7 @@ Item {
             width:40
             height: 40
             background: Image {
-                id: image
+                id: imagePOIOn
                 source: "qrc:/icons/poi-on.png"
                 height: 40
                 width: 30
@@ -526,5 +540,22 @@ Item {
                 showPoi(poiVisible)
             }
         }
+        Button {
+            id: mapCenterButton
+            x: map.width - 10 - 40
+            y:10 + 40 + 10 + 50 + 50
+            width:40
+            height: 40
+            background: Image {
+                id: imageMapCenter
+                source: "qrc:/icons/map-center.png"
+                height: 30
+                width: 30
+            }
+            onClicked: {
+                setMapCenteri()
+            }
+        }
+
     }
 }
