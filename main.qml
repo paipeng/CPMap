@@ -189,8 +189,8 @@ Item {
             import QtPositioning 5.12
             Image {
                 source: "qrc:/icons/' +  imageSrc + '"
-                height: 30
-                width: 20
+                height: 26
+                width: 18
             }', map);
 
         poiButton.background = qmlImage
