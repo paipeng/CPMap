@@ -74,20 +74,36 @@ Item {
             console.log(index + ': ' + item.type + ', ' + item.longitude)
             var imagePOI = 'imagePOI'
             if (item.type === 1) {
-                imagePOI = 'imagePOI'
+                imagePOI = 'poi.png'
             } else if (item.type === 2) {
-                imagePOI = 'imageParkingPOI'
+                imagePOI = 'poi-parking.png'
             } else if (item.type === 3) {
-                imagePOI = 'imagePolicePOI'
+                imagePOI = 'poi-police.png'
             } else if (item.type === 4) {
-                imagePOI = 'imageWCPOI'
+                imagePOI = 'poi-wc.png'
             } else if (item.type === 5) {
-                imagePOI = 'imageRestaurantPOI'
+                imagePOI = 'poi-restaurant.png'
             } else if (item.type === 6) {
-                imagePOI = 'imageFirstAidPOI'
+                imagePOI = 'poi-first-aid.png'
             }
+            console.log('imagePOI: ' + imagePOI)
 
-            var qmlObjectStr = 'import QtLocation 5.12;import QtPositioning 5.12;    // 这里只画中线
+            var qmlImage = Qt.createQmlObject('
+                import QtQuick 2.12
+                import QtQuick.Window 2.5
+                import QtQuick.Controls 2.5
+                import QtLocation 5.12
+                import QtPositioning 5.12
+                Image {
+                    source: "qrc:/icons/' +  imagePOI + '"
+                    height: 50
+                    width: 40
+                }', map);
+            //console.log(qmlImage)
+
+            var qmlObjectStr = '
+                import QtLocation 5.12;
+                import QtPositioning 5.12;    // 这里只画中线
                 MapQuickItem {
                     id: poiItem_' + item.name + '
                     anchorPoint.x: sourceItem.width/2
@@ -95,8 +111,9 @@ Item {
 
                     coordinate: QtPositioning.coordinate(' + item.latitude + ', ' + item.longitude +')
 
-                    sourceItem: ' + imagePOI + ' }'
-            var poiItem = Qt.createQmlObject(qmlObjectStr, map, 'poiItem-' + item.name)
+                }'
+            var poiItem = Qt.createQmlObject(qmlObjectStr, map, 'poiItem_' + item.name)
+            poiItem.sourceItem = qmlImage
             map.addMapItem(poiItem)
             index++
         }
@@ -310,7 +327,7 @@ Item {
             color: "green"
             border.width: 3
         }
-*/
+
         Image {
             id: imageWCPOI
 
@@ -359,7 +376,7 @@ Item {
             height: 50
             width: 50
         }
-/*
+
         MapQuickItem {
             id: marker
             anchorPoint.x: image.width/2
