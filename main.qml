@@ -55,6 +55,7 @@ Item {
     property MapQuickItem poiItem
     property MapQuickItem poiItem2
     property string poisJsonString
+    property bool poiVisible: true
 
     Component.onCompleted: {
         console.log('item component onCompleted')
@@ -166,6 +167,36 @@ Item {
         if (map.zoomLevel > map.minimumZoomLevel) {
             map.zoomLevel = map.zoomLevel - 1
         }
+    }
+
+    function showPoi(visible) {
+        console.log('showPoi: ' + visible)
+
+        var imageSrc = ''
+        if (poiVisible) {
+            imageSrc = 'poi-off.png'
+        } else {
+            imageSrc = 'poi-on.png'
+        }
+
+        var qmlImage = Qt.createQmlObject('
+            import QtQuick 2.12
+            import QtQuick.Window 2.5
+            import QtQuick.Controls 2.5
+            import QtLocation 5.12
+            import QtPositioning 5.12
+            Image {
+                source: "qrc:/icons/' +  imageSrc + '"
+                height: 40
+                width: 30
+            }', map);
+
+        poiButton.background = qmlImage
+        for (var i = 0; i < map.mapItems.length; i++) {
+            var poiItem = map.mapItems[i]
+            poiItem.visible = !visible
+        }
+        poiVisible = !visible
     }
 
     // Example 2: Custom QML Type implemented with C++
@@ -476,6 +507,23 @@ Item {
             background: imageZoomOut
             onClicked: {
                 zoomOut()
+            }
+        }
+
+        Button {
+            id: poiButton
+            x: map.width - 10 - 40
+            y:10 + 40 + 10 + 50
+            width:40
+            height: 40
+            background: Image {
+                id: image
+                source: "qrc:/icons/poi-on.png"
+                height: 40
+                width: 30
+            }
+            onClicked: {
+                showPoi(poiVisible)
             }
         }
     }

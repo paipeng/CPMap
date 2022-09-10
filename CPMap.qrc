@@ -650,6 +650,8 @@
         <file>icons/poi-police.png</file>
         <file>icons/zoom-in.png</file>
         <file>icons/zoom-out.png</file>
+        <file>icons/poi-off.png</file>
+        <file>icons/poi-on.png</file>
     </qresource>
     <qresource prefix="/json">
         <file>coordinate.json</file>
