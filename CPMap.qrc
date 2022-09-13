@@ -654,6 +654,7 @@
         <file>icons/poi-on.png</file>
         <file>icons/map-center.png</file>
         <file>icons/delete.png</file>
+        <file>app.ico</file>
     </qresource>
     <qresource prefix="/json">
         <file>coordinate.json</file>

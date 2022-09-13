@@ -41,8 +41,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     CPMap.qrc
 
-
-
+RC_ICONS = app.ico
 
 win32:CONFIG(release, debug|release): {
     copydata.commands = $(COPY_DIR) $$shell_quote($$shell_path($$PWD\*.qml)) $$shell_quote($$shell_path($$OUT_PWD))
