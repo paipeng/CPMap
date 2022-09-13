@@ -45,7 +45,7 @@ RESOURCES += \
 
 
 win32:CONFIG(release, debug|release): {
-    copydata.commands = $(COPY_DIR) $$PWD/*.qml $$OUT_PWD/release
+    copydata.commands = $(COPY_DIR) $$shell_quote($$shell_path($$PWD\*.qml)) $$shell_quote($$shell_path($$OUT_PWD))
     first.depends = $(first) copydata
     export(first.depends)
     export(copydata.commands)
