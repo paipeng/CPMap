@@ -385,7 +385,7 @@ Item {
 
             }
             MenuItem {
-                text: 'Edit POI'
+                text: '编辑POI'
                 enabled: false
                 onTriggered: {
                     console.log('edit poi:' + mousePosition)
@@ -393,7 +393,7 @@ Item {
                 }
             }
             MenuItem {
-                text: 'Delete POI'
+                text: '删除POI'
                 onTriggered: {
                     console.log('delete poi+ ' + mousePosition)
 
