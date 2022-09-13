@@ -43,8 +43,26 @@ RESOURCES += \
 
 
 
-copydata.commands = $(COPY_DIR) $$PWD/*.qml $$OUT_PWD/CPMap.app/Contents/MacOS
-first.depends = $(first) copydata
-export(first.depends)
-export(copydata.commands)
-QMAKE_EXTRA_TARGETS += first copydata
+
+win32:CONFIG(release, debug|release): {
+    copydata.commands = $(COPY_DIR) $$PWD/*.qml $$OUT_PWD/release
+    first.depends = $(first) copydata
+    export(first.depends)
+    export(copydata.commands)
+    QMAKE_EXTRA_TARGETS += first copydata
+}
+else:win32:CONFIG(debug, debug|release): {
+    copydata.commands = $(COPY_DIR) $$shell_quote($$shell_path($$PWD\*.qml)) $$shell_quote($$shell_path($$OUT_PWD))
+    first.depends = $(first) copydata
+    export(first.depends)
+    export(copydata.commands)
+    QMAKE_EXTRA_TARGETS += first copydata
+}
+else:unix: {
+    copydata.commands = $(COPY_DIR) $$PWD/*.qml $$OUT_PWD/CPMap.app/Contents/MacOS
+    first.depends = $(first) copydata
+    export(first.depends)
+    export(copydata.commands)
+    QMAKE_EXTRA_TARGETS += first copydata
+}
+
