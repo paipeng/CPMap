@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>CP地图Installer</DisplayName>
+    <Description>Pai Peng Software Installer</Description>
+    <Version>1.0.0</Version>
+    <ReleaseDate>2022-09-13</ReleaseDate>
+    <Name>com.paipeng.cpmap.installer</Name>
+    <Default>true</Default>
+    <UpdateText>This changed compared to the last release</UpdateText>
+</Package>
