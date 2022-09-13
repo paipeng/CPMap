@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2017 The Qt Company Ltd.
 ** Contact: http://www.qt.io/licensing/
@@ -64,9 +64,9 @@ Item {
         var JsonString = '{"a":"A whatever, run","b":"B fore something happens"}';
         var JsonObject= JSON.parse(JsonString);
         console.log(JsonObject)
-        //poisJsonString = myGlobalObject.getJson();
-
-        poi = JSON.parse(myGlobalObject.getJson())
+        var poisJsonString = myGlobalObject.getJson();
+        console.log(poisJsonString)
+        poi = JSON.parse(poisJsonString)
 
         map.zoomLevel = poi.map.zoomLevel
         map.maximumZoomLevel = poi.map.maximumZoomLevel
@@ -147,8 +147,8 @@ Item {
             import QtPositioning 5.12
             Image {
                 source: "qrc:/icons/' +  imageSrc + '"
-                height: 26
-                width: 18
+                height: 40
+                width: 30
             }', map);
 
         poiButton.background = qmlImage
