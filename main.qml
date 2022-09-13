@@ -77,54 +77,12 @@ Item {
         //mapPolygon.path = borderPoints
         //console.log('json: ' + mapPolyline.path)
 
-        var index = 0
+        //var index = 0
         for (var i = 0; i < poi.pois.length; i++) {
             var item = poi.pois[i]
-            console.log(index + ': ' + item.type + ', ' + item.longitude)
-            var imagePOI = 'imagePOI'
-            if (item.type === 1) {
-                imagePOI = 'poi.png'
-            } else if (item.type === 2) {
-                imagePOI = 'poi-parking.png'
-            } else if (item.type === 3) {
-                imagePOI = 'poi-police.png'
-            } else if (item.type === 4) {
-                imagePOI = 'poi-wc.png'
-            } else if (item.type === 5) {
-                imagePOI = 'poi-restaurant.png'
-            } else if (item.type === 6) {
-                imagePOI = 'poi-first-aid.png'
-            }
-            console.log('imagePOI: ' + imagePOI)
-
-            var qmlImage = Qt.createQmlObject('
-                import QtQuick 2.12
-                import QtQuick.Window 2.5
-                import QtQuick.Controls 2.5
-                import QtLocation 5.12
-                import QtPositioning 5.12
-                Image {
-                    source: "qrc:/icons/' +  imagePOI + '"
-                    height: 50
-                    width: 40
-                }', map);
-            //console.log(qmlImage)
-
-            var qmlObjectStr = '
-                import QtLocation 5.12;
-                import QtPositioning 5.12;    // 这里只画中线
-                MapQuickItem {
-                    id: poiItem_' + item.name + '
-                    anchorPoint.x: sourceItem.width/2
-                    anchorPoint.y: sourceItem.height
-
-                    coordinate: QtPositioning.coordinate(' + item.latitude + ', ' + item.longitude +')
-
-                }'
-            var poiItem = Qt.createQmlObject(qmlObjectStr, map, 'poiItem_' + item.name)
-            poiItem.sourceItem = qmlImage
-            map.addMapItem(poiItem)
-            index++
+            //console.log(index + ': ' + item.type + ', ' + item.longitude)
+            createPoi(item.latitude, item.longitude, item.type, item.name)
+            //index++
         }
 /*
         poiItem = Qt.createQmlObject('import QtLocation 5.12;import QtPositioning 5.12;    // 这里只画中线
@@ -210,6 +168,64 @@ Item {
     function setMapCenteri() {
         console.log('setMapCenter')
         map.center = QtPositioning.coordinate(poi.map.center.latitude, poi.map.center.longitude)
+    }
+
+    function addPoi(latitude, longitude, type, name) {
+        var json = '{
+            "type": ' + type + ',
+            "name": "' + name + '",
+            "latitude": ' + latitude + ',
+            "longitude": ' + longitude + '
+        }';
+        console.log(json)
+        createPoi(latitude, longitude, type, name)
+    }
+
+    function createPoi(latitude, longitude, type, name) {
+        console.log('createPoi: ' + type + ', ' + longitude)
+        var imagePOI = 'imagePOI'
+        if (type === 1) {
+            imagePOI = 'poi.png'
+        } else if (type === 2) {
+            imagePOI = 'poi-parking.png'
+        } else if (type === 3) {
+            imagePOI = 'poi-police.png'
+        } else if (type === 4) {
+            imagePOI = 'poi-wc.png'
+        } else if (type === 5) {
+            imagePOI = 'poi-restaurant.png'
+        } else if (type === 6) {
+            imagePOI = 'poi-first-aid.png'
+        }
+        console.log('imagePOI: ' + imagePOI)
+
+        var qmlImage = Qt.createQmlObject('
+            import QtQuick 2.12
+            import QtQuick.Window 2.5
+            import QtQuick.Controls 2.5
+            import QtLocation 5.12
+            import QtPositioning 5.12
+            Image {
+                source: "qrc:/icons/' +  imagePOI + '"
+                height: 50
+                width: 40
+            }', map);
+        //console.log(qmlImage)
+
+        var qmlObjectStr = '
+            import QtLocation 5.12;
+            import QtPositioning 5.12;    // 这里只画中线
+            MapQuickItem {
+                id: poiItem_' + name + '
+                anchorPoint.x: sourceItem.width/2
+                anchorPoint.y: sourceItem.height
+
+                coordinate: QtPositioning.coordinate(' + latitude + ', ' + longitude +')
+
+            }'
+        var poiItem = Qt.createQmlObject(qmlObjectStr, map, 'poiItem_' + name)
+        poiItem.sourceItem = qmlImage
+        map.addMapItem(poiItem)
     }
 
     // Example 2: Custom QML Type implemented with C++
@@ -329,7 +345,9 @@ Item {
 
                     onTriggered: {
                         console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
-                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                        var coordination = map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y))
+                        console.log('coordination: ' + coordination)
+                        addPoi(coordination.latitude, coordination.longitude, 2, 'Parking')
                     }
                 }
                 MenuItem {
@@ -339,7 +357,9 @@ Item {
                     icon.height: 20
                     onTriggered: {
                         console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
-                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                        var coordination = map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y))
+                        console.log('coordination: ' + coordination)
+                        addPoi(coordination.latitude, coordination.longitude, 6, 'FirstAid')
                     }
                 }
                 MenuItem {
@@ -349,7 +369,9 @@ Item {
                     icon.height: 20
                     onTriggered: {
                         console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
-                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                        var coordination = map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y))
+                        console.log('coordination: ' + coordination)
+                        addPoi(coordination.latitude, coordination.longitude, 3, 'Police')
                     }
                 }
                 MenuItem {
@@ -359,7 +381,9 @@ Item {
                     icon.height: 20
                     onTriggered: {
                         console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
-                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                        var coordination = map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y))
+                        console.log('coordination: ' + coordination)
+                        addPoi(coordination.latitude, coordination.longitude, 5, 'Restaurant')
                     }
                 }
                 MenuItem {
@@ -369,7 +393,9 @@ Item {
                     icon.height: 20
                     onTriggered: {
                         console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
-                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                        var coordination = map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y))
+                        console.log('coordination: ' + coordination)
+                        addPoi(coordination.latitude, coordination.longitude, 4, 'WC')
                     }
                 }
                 MenuItem {
@@ -379,7 +405,9 @@ Item {
                     icon.height: 20
                     onTriggered: {
                         console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
-                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                        var coordination = map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y))
+                        console.log('coordination: ' + coordination)
+                        addPoi(coordination.latitude, coordination.longitude, 1, 'Entrance')
                     }
                 }
 
