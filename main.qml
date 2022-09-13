@@ -228,6 +228,10 @@ Item {
         map.addMapItem(poiItem)
     }
 
+    function deletePOIs() {
+        map.clearMapItems()
+    }
+
     // Example 2: Custom QML Type implemented with C++
     // NOTE: This type is declared in main.cpp and available after using "import com.yourcompany.xyz 1.0"
     MyQMLType {
@@ -495,101 +499,6 @@ Item {
             //    map.center = mapCenter.coordinate
             //}
         }
-/*
-        MapCircle {
-            // Circle just for ability to check if it zooms correctly
-            center: mapCenter.coordinate
-            radius: 50.0
-            color: "green"
-            border.width: 3
-        }
-
-        Image {
-            id: imageWCPOI
-
-            source: "qrc:/icons/poi-wc.png"
-            height: 50
-            width: 50
-        }
-
-        Image {
-            id: imageParkingPOI
-
-            source: "qrc:/icons/poi-parking.png"
-            height: 50
-            width: 50
-        }
-
-        Image {
-            id: imageFirstAidPOI
-
-            source: "qrc:/icons/poi-first-aid.png"
-            height: 50
-            width: 50
-        }
-
-        Image {
-            id: imagePolicePOI
-
-            source: "qrc:/icons/poi-police.png"
-            height: 50
-            width: 50
-        }
-
-        Image {
-            id: imageRestaurantPOI
-
-            source: "qrc:/icons/poi-restaurant.png"
-            height: 50
-            width: 50
-        }
-
-
-        Image {
-            id: imagePOI
-
-            source: "qrc:/icons/poi.png"
-            height: 50
-            width: 50
-        }
-
-        MapQuickItem {
-            id: marker
-            anchorPoint.x: image.width/2
-            anchorPoint.y: image.height
-
-            coordinate: mapCenter.coordinate//QtPositioning.coordinate(20.5, -2.5)
-
-            sourceItem: Image {
-                id: image
-
-                source: "qrc:/icons/poi.png"
-                height: 50
-                width: 50
-            }
-        }
-
-        MapQuickItem {
-            id: markerWC
-            anchorPoint.x: image.width/2
-            anchorPoint.y: image.height
-
-            coordinate: QtPositioning.coordinate(41.83896,123.42097)
-
-            sourceItem: imageWCPOI
-        }
-
-
-        MapQuickItem {
-            id: markerPARK
-            anchorPoint.x: imageParkingPOI.width/2
-            anchorPoint.y: imageParkingPOI.height
-
-            coordinate: QtPositioning.coordinate(41.8448,123.4314)
-
-            sourceItem: imageParkingPOI
-        }
-*/
 
 
         MapPolyline {
@@ -679,6 +588,23 @@ Item {
             }
             onClicked: {
                 setMapCenteri()
+            }
+        }
+
+        Button {
+            id: mapDeleteButton
+            x: map.width - 10 - 40
+            y:10 + 40 + 10 + 50 + 50 + 50
+            width:40
+            height: 40
+            background: Image {
+                id: imageDelete
+                source: "qrc:/icons/delete.png"
+                height: 30
+                width: 30
+            }
+            onClicked: {
+                deletePOIs()
             }
         }
 

@@ -653,6 +653,7 @@
         <file>icons/poi-off.png</file>
         <file>icons/poi-on.png</file>
         <file>icons/map-center.png</file>
+        <file>icons/delete.png</file>
     </qresource>
     <qresource prefix="/json">
         <file>coordinate.json</file>
