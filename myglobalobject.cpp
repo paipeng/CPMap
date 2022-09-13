@@ -1,4 +1,4 @@
-#include "myglobalobject.h"
+﻿#include "myglobalobject.h"
 #include <QDebug>
 #include <QFile>
 
@@ -33,6 +33,7 @@ QString MyGlobalObject::getJson() {
     }
 
     QTextStream in(&mFile);
+    in.setCodec("UTF-8");
     QString mText = in.readAll();
 
     //qDebug() << mText;
