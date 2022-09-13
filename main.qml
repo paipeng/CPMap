@@ -316,14 +316,71 @@ Item {
         Menu {
             id: contextMenu
             width: 100
-            MenuItem {
-                text: 'Add POI'
-                icon.source: "qrc:/icons/poi.png"
-                icon.width: 20
-                icon.height: 20
 
-                onTriggered: {
-                    console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+            Menu {
+                id: contextMenu2
+
+                title: '添加POI'
+                MenuItem {
+                    text: '停车场'
+                    icon.source: "qrc:/icons/poi-parking.png"
+                    icon.width: 20
+                    icon.height: 20
+
+                    onTriggered: {
+                        console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                    }
+                }
+                MenuItem {
+                    text: '医务室'
+                    icon.source: "qrc:/icons/poi-first-aid.png"
+                    icon.width: 20
+                    icon.height: 20
+                    onTriggered: {
+                        console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                    }
+                }
+                MenuItem {
+                    text: '治安室'
+                    icon.source: "qrc:/icons/poi-police.png"
+                    icon.width: 20
+                    icon.height: 20
+                    onTriggered: {
+                        console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                    }
+                }
+                MenuItem {
+                    text: '餐厅'
+                    icon.source: "qrc:/icons/poi-restaurant.png"
+                    icon.width: 20
+                    icon.height: 20
+                    onTriggered: {
+                        console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                    }
+                }
+                MenuItem {
+                    text: '卫生间'
+                    icon.source: "qrc:/icons/poi-wc.png"
+                    icon.width: 20
+                    icon.height: 20
+                    onTriggered: {
+                        console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                    }
+                }
+                MenuItem {
+                    text: '出入口'
+                    icon.source: "qrc:/icons/poi.png"
+                    icon.width: 20
+                    icon.height: 20
+                    onTriggered: {
+                        console.log('add poi: ' + mousePosition.x + '-' + mousePosition.y)
+                        console.log('coordination: ' + map.toCoordinate(Qt.point(mousePosition.x,mousePosition.y)))
+                    }
                 }
 
             }
