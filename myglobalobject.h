@@ -2,6 +2,7 @@
 #define MYGLOBALOBJECT_H
 
 #include <QObject>
+#include <QTimer>
 
 class MyGlobalObject : public QObject
 {
@@ -17,10 +18,12 @@ public slots: // slots are public methods available in QML
     void doSomething(const QString &text);
     QString getJson();
     QString getInfoText();
+    void timeout();
 signals:
     void counterChanged();
 private:
     int m_counter;
+    QTimer *timer;
 };
 
 #endif // MYGLOBALOBJECT_H

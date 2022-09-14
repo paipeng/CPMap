@@ -59,6 +59,15 @@ Item {
     property var poi
     property var mousePosition
 
+    // 2.5: Connections allow to add signal handlers for global context property objects
+    Connections {
+        target: myGlobalObject
+        onCounterChanged: {
+            console.log("Counter changed to " + myGlobalObject.counter)
+            clearText()
+        }
+    }
+
     Component.onCompleted: {
         console.log('item component onCompleted')
         var JsonString = '{"a":"A whatever, run","b":"B fore something happens"}';
@@ -220,6 +229,7 @@ Item {
         }
         info.text = myGlobalObject.getInfoText()//'a1\nb2\nc3'
     }
+
 
     // Example 2: Custom QML Type implemented with C++
     // NOTE: This type is declared in main.cpp and available after using "import com.yourcompany.xyz 1.0"

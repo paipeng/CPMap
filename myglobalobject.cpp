@@ -2,9 +2,13 @@
 #include <QDebug>
 #include <QFile>
 
-MyGlobalObject::MyGlobalObject(QObject *parent) : QObject(parent), m_counter(0)
+MyGlobalObject::MyGlobalObject(QObject *parent) : QObject(parent), m_counter(0), timer(NULL)
 {
+    timer = new QTimer(this);
+    // setup signal and slot
+    connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
+    timer->start(1000);
 }
 
 
@@ -56,12 +60,12 @@ QString MyGlobalObject::getInfoText() {
 
     infoText.append(tr("person_entry_total"));
     infoText.append(":\n");
-    infoText.append(QString::number(4));
+    infoText.append(QString::number(m_counter));
     infoText.append("\n");
 
     infoText.append(tr("person_entry"));
     infoText.append(":\n");
-    infoText.append(QString::number(4));
+    infoText.append(QString::number(m_counter-1));
     infoText.append("\n");
     infoText.append(tr("person_exit"));
     infoText.append(":\n");
@@ -70,5 +74,11 @@ QString MyGlobalObject::getInfoText() {
 
 
     return infoText;
+}
+
+void MyGlobalObject::timeout() {
+    qDebug() << "timeout";
+    m_counter++;
+    counterChanged();
 }
 
