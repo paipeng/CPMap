@@ -84,32 +84,6 @@ Item {
             createPoi(item.latitude, item.longitude, item.type, item.name)
             //index++
         }
-/*
-        poiItem = Qt.createQmlObject('import QtLocation 5.12;import QtPositioning 5.12;    // 这里只画中线
-        MapQuickItem {
-            id: poiItem
-            anchorPoint.x: sourceItem.width/2
-            anchorPoint.y: sourceItem.height
-
-            coordinate: QtPositioning.coordinate(41.8374,123.4240)
-
-            sourceItem: imageParkingPOI
-        }', map, "poiItem");
-        //console.log(newMapLaneMedian.coordinate)
-        //map.addMapItem(newMapLaneMedian)
-
-
-        poiItem2 = Qt.createQmlObject('import QtLocation 5.12;import QtPositioning 5.12;    // 这里只画中线
-        MapQuickItem {
-            id: poiItem2
-            anchorPoint.x: sourceItem.width/2
-            anchorPoint.y: sourceItem.height
-
-            coordinate: QtPositioning.coordinate(41.84745,123.42143)
-
-            sourceItem: imageWCPOI
-        }', map, "poiItem2");
-        */
     }
 
     function focusOnLocation() {
@@ -232,6 +206,21 @@ Item {
         map.clearMapItems()
     }
 
+    function clearText() {
+        console.log('clearText')
+        for (var i = 0; i < map.children; i++) {
+            var poiItem = map.children[i]
+
+            if (poiItem.text === undefined) {
+                console.log('poiItem type: ' + poiItem.constructor)
+            } else {
+                console.log('poiItem type: text')
+                poiItem.text = ''
+            }
+        }
+        info.text = myGlobalObject.getInfoText()//'a1\nb2\nc3'
+    }
+
     // Example 2: Custom QML Type implemented with C++
     // NOTE: This type is declared in main.cpp and available after using "import com.yourcompany.xyz 1.0"
     MyQMLType {
@@ -254,6 +243,8 @@ Item {
         onCppTaskFinished: {
             console.log("onCppTaskFinished")
             myGlobalObject.counter = 0 // reset counter to zero, this will also update the message
+
+            clearText();
         }
     }
 
@@ -606,6 +597,28 @@ Item {
             onClicked: {
                 deletePOIs()
             }
+        }
+
+        Rectangle {
+            x: 10
+            y: map.height - 10 - 220
+            width: 100
+            height: 220
+            color: "#720F10FF"
+            border.color: "#121F00FF"
+            border.width: 5
+            radius: 10
+        }
+
+        Text {
+            id: info
+            text: "Hello 地图"
+            font.family: "Helvetica"
+            font.pointSize: 14
+            font.bold: true
+            color: "white"
+            x: 18
+            y: map.height - 10 - 220 + 10
         }
 
     }

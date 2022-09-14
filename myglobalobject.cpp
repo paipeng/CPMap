@@ -24,21 +24,51 @@ void MyGlobalObject::setCounter(int value) {
 }
 
 QString MyGlobalObject::getJson() {
-//return QString("hello QML from C++");
+    //return QString("hello QML from C++");
     QFile mFile(":/json/coordinate.json");
-
     if(!mFile.open(QFile::ReadOnly | QFile::Text)){
         qDebug() << "could not open file for read";
         return "";
     }
-
     QTextStream in(&mFile);
     in.setCodec("UTF-8");
     QString mText = in.readAll();
-
     //qDebug() << mText;
-
     mFile.close();
     return mText;
-
 }
+
+
+QString MyGlobalObject::getInfoText() {
+    QString infoText;
+    infoText.append(tr("person_total"));
+    infoText.append(":\n");
+    infoText.append(QString::number(20));
+    infoText.append("\n");
+    infoText.append(tr("idcard_total"));
+    infoText.append(":\n");
+    infoText.append(QString::number(10));
+    infoText.append("\n");
+    infoText.append(tr("idcard_person_total"));
+    infoText.append(":\n");
+    infoText.append(QString::number(4));
+    infoText.append("\n");
+
+    infoText.append(tr("person_entry_total"));
+    infoText.append(":\n");
+    infoText.append(QString::number(4));
+    infoText.append("\n");
+
+    infoText.append(tr("person_entry"));
+    infoText.append(":\n");
+    infoText.append(QString::number(4));
+    infoText.append("\n");
+    infoText.append(tr("person_exit"));
+    infoText.append(":\n");
+    infoText.append(QString::number(4));
+    infoText.append("\n");
+
+
+    return infoText;
+}
+

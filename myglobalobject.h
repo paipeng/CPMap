@@ -13,10 +13,10 @@ public:
     explicit MyGlobalObject(QObject *parent = nullptr);
     int counter() const;
     void setCounter(int value);
-
 public slots: // slots are public methods available in QML
     void doSomething(const QString &text);
     QString getJson();
+    QString getInfoText();
 signals:
     void counterChanged();
 private:
