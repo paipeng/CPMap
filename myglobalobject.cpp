@@ -50,25 +50,25 @@ QString MyGlobalObject::getInfoText() {
     infoText.append(QString::number(20));
     infoText.append("\n");
     infoText.append(tr("idcard_total"));
-    infoText.append(":\n");
+    infoText.append("\n");
     infoText.append(QString::number(10));
     infoText.append("\n");
     infoText.append(tr("idcard_person_total"));
-    infoText.append(":\n");
+    infoText.append("\n");
     infoText.append(QString::number(4));
     infoText.append("\n");
 
     infoText.append(tr("person_entry_total"));
-    infoText.append(":\n");
+    infoText.append("\n");
     infoText.append(QString::number(m_counter));
     infoText.append("\n");
 
     infoText.append(tr("person_entry"));
-    infoText.append(":\n");
+    infoText.append("\n");
     infoText.append(QString::number(m_counter-1));
     infoText.append("\n");
     infoText.append(tr("person_exit"));
-    infoText.append(":\n");
+    infoText.append("\n");
     infoText.append(QString::number(4));
     infoText.append("\n");
 
